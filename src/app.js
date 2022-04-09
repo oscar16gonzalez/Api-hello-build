@@ -2,6 +2,7 @@ import express from "express";
 import morgan from 'morgan';
 import cors from 'cors'
 import userRoutes from './routes/user.routes';
+import repoRoutes from './routes/repo.routes';
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.get('/', (req,res) => {
 })
 
 app.use('/api',userRoutes)
+app.use('/api/repo',repoRoutes)
 
 export default app;

@@ -7,7 +7,7 @@ export const getAllUser = async (req, res) => {
 
 export const postUser = async (req, res) => {
     try {
-        const newUser = new User({ firstName: req.body.firstName, lastName: req.body.lastName, emal: req.body.emal, cellphone: req.body.cellphone, password: req.body.password })
+        const newUser = new User({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email, cellphone: req.body.cellphone, password: req.body.password })
         const userSave = await newUser.save();
         res.json(userSave)
     } catch (error) {
@@ -16,10 +16,16 @@ export const postUser = async (req, res) => {
     }
 }
 
-export const getOneUser = async (req, res) => {
+export const getEmailUser = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
-        res.json(user)
+        console.log(req.params.email);
+        const user = await User.find({ email: req.params.email })
+        console.log(user);
+        if (user.length === 0) {
+            res.status(400).send('User not found');
+        } else {
+            res.json(user)
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('User not found');
@@ -29,7 +35,7 @@ export const getOneUser = async (req, res) => {
 export const deletUSer = async (req, res) => {
     await User.findByIdAndDelete(req.params.id)
     res.json({
-        message: "${id} user were deleted succesfully",
+        message: `${id} user were deleted succesfully`,
     });
 
 }
